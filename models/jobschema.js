@@ -98,11 +98,9 @@ var jobSchema = new Schema({
 		type: [Task],
 		required: true
 	},
-	note: [
-		{
-			type: String
-		}
-	],
+	note: {
+		type: [String]
+	},
 	arrival:{
 		type: Arrival,
 		required: true
