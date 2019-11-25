@@ -1,251 +1,41 @@
-const express = require('express');
-const app = express();
-const port = process.env.PORT || 3000;
+var express 		= require('express');
+var bodyParser 		= require('body-parser');
 
-const ManagerModel= require('./models/managerschema');
-const AgentModel= require('./models/agentschema');
-const JobModel= require('./models/jobschema');
-const TaskModel= require('./models/taskschema');
+var app 			= express();
+var port 			= process.env.PORT || 3000;
+var mongoose 		= require('mongoose');
+var mongoDb 		= '';
 
-//Get Manager
-app.get('/manager/:id', (req, res) => 
-	ManagerModel.find({_id: req.id}).then(
-		(data)=> {
-			res.send(data)
-		},
-		(err) => {
-			res.status().send('Error');
-		})
-);
+var router = express.Router();
 
-//Create new Manager
-app.post('/manager', data, (req, res) => {
-		const managere= new ManagerModel({
-			name: req.body.name,
-			email: req.body.email,
-			phone: req.body.phone
-		});
-		agent.save()
-		.then((result) => {
-			console.log(result)
-		})
-		.catch((err)=>{
-			console.log(err)
-		})
-		res.status(201).send('Success')
-	}
-);
+mongoose.connect('mongodb://localhost:27017/test', {useUnifiedTopology: true, useNewUrlParser: true});
 
-//Get Agent 
-app.get('/agent/:id', (req, res) => 
-	AgentModel.find({_id: req.id}).then(
-		(data)=> {
-			res.send(data)
-		},
-		(err) => {
-			res.status().send('Error');
-		})
-);
+const api		= require('./api/api');
 
-//Get Job
-app.get('/job/:id', (req, res) => 
-	JobModel.find({_id: req.id}).then(
-		(data)=> {
-			res.send(data)
-		},
-		(err) => {
-			res.status().send('Error');
-		})
-);
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-//Get Task
-app.get('/task/:id', (req, res) => 
-	TaskModel.find({_id: req.id}).then(
-		(data)=> {
-			res.send(data)
-		},
-		(err) => {
-			res.status().send('Error');
-		})
-);
+app.use(function (req, res, next) {
 
-//Edit Manager
-app.put('/manager/:id', data, (req, res) => {
-		const managere= new ManagerModel({
-			name: req.body.name,
-			email: req.body.email,
-			phone: req.body.phone
-		});
-		agent.save()
-		.then((result) => {
-			console.log(result)
-		})
-		.catch((err)=>{
-			console.log(err)
-		})
-		res.status(200).send('Success')
-	}
-);
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');
 
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
-//Create new Agent
-app.post('/manager/:id', data, (req, res) => {
-		const managere= new ManagerModel({
-			name: req.body.name,
-			email: req.body.email,
-			phone: req.body.phone
-		});
-		agent.save()
-		.then((result) => {
-			console.log(result)
-		})
-		.catch((err)=>{
-			console.log(err)
-		})
-		res.status(201).send('Success')
-	}
-);
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Authorization');
 
-//Edit Agent
-app.put('/agent/:id', data, (req, res) => {
-		const agent= new AgentModel({
-			name: req.body.name,
-			email: req.body.email,
-			phone: req.body.phone
-		});
-		agent.save()
-		.then((result) => {
-			console.log(result)
-		})
-		.catch((err)=>{
-			console.log(err)
-		})
-		res.status(200).send('Success')
-	}
-);
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
 
+    // Pass to next layer of middleware
+    next();
+});
 
+app.use(api);
 
-//Edit Job
-app.put('/job/:id', data, (req, res) => {
-		const job= new JobModel({
-			name: req.body.name,
-			eta: req.body.eta,
-			etd: req.body.etd,
-			last_port: req.body.last_port,
-			isps: req.body.isps,
-			next_port: req.body.next_port,
-			port_of_call: req.body.port_of_call,
-			pic: req.body.pic,
-			task: req.body.task,
-			note: req.body.note,
-			arrival: req.body.arrival,
-			departure: req.body.departure,
-			status: req.body.status
-		});
-		job.save()
-		.then((result) => {
-			console.log(result)
-		})
-		.catch((err)=>{
-			console.log(err)
-		})
-		res.status(200).send('Success')
-	}
-);
-
-//Edit Job Status
-app.put('/job/:id', data, (req, res) => {
-		const job= new JobModel({
-			status: req.body.status
-		});
-		job.save()
-		.then((result)=> {
-			console.log(result);
-		}).catch((err)=> {
-			console.log(err);
-		});
-	}
-);
-
-//Edit Assigned Agent
-app.put('/job/:id', data, (req, res) => {
-		const job= new JobModel({
-			assigned: req.body.assigned
-		});
-		job.save()
-		.then((result)=> {
-			console.log(result);
-		}).catch((err)=> {
-			console.log(err);
-		});
-	}
-);
-
-//Edit Task
-app.put('/task/:id', data, (req, res) => 
-	TaskModel.find({_id: req.id}).then(
-		(data)=> {
-			res.send(data)
-		},
-		(err) => {
-			res.status().send('Error');
-		})
-);
-
-//Edit Task Status
-app.put('/task/:id', data, (req, res) => 
-	TaskModel.find({_id: req.id}).then(
-		(data)=> {
-			res.send(data.status)
-		},
-		(err) => {
-			res.status().send('Error');
-		})
-);
-
-//Delet Manager
-app.delete('/manager/:id', (req, res) => 
-	ManagerModel.find({_id: req.id}).then(
-		(data)=> {
-			res.send(data)
-		},
-		(err) => {
-			res.status().send('Error');
-		})
-);
-
-//Delete Agent
-app.delete('/agent/:id', (req, res) => 
-	AgentModel.find({_id: req.id}).then(
-		(data)=> {
-			res.send(data)
-		},
-		(err) => {
-			res.status().send('Error');
-		})
-);
-
-//Delete Job
-app.delete('/job/:id', (req, res) => 
-	JobModel.find({_id: req.id}).then(
-		(data)=> {
-			res.send(data)
-		},
-		(err) => {
-			res.status().send('Error');
-		})
-);
-
-//Delete Task
-app.delete('/task/:id', (req, res) => 
-	TaskModel.find({_id: req.id}).then(
-		(data)=> {
-			res.send(data)
-		},
-		(err) => {
-			res.status().send('Error');
-		})
-);
+mongoose.set('useFindAndModify', false);
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));

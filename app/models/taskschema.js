@@ -2,9 +2,15 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Detail = new Schema({
-	type: String,
-	required: true
-});
+	name: {
+		type: String,
+		required: true
+	},
+	details: {
+		type: String,
+		required: true
+	}
+},{_id: false});
 
 var taskSchema = new Schema({
 	name:{
@@ -12,8 +18,7 @@ var taskSchema = new Schema({
 		required: true
 	},
 	detail:{
-		type: Detail,
-		required: true
+		type: [Detail]
 	},
 	status:{
 		type: Number,

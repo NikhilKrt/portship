@@ -3,8 +3,6 @@ var Schema = mongoose.Schema;
 
 var Task = mongoose.Schema.Types.ObjectId;
 
-var Note = new Schema({});
-
 var Draft = new Schema({
 	fwd: {
 		type: Number,
@@ -63,40 +61,33 @@ var jobSchema = new Schema({
 		required: true
 	},
 	eta:{
-		type: String,
-		required: true
+		type: String
 	},
 	etd:{
-		type: String,
-		required: true
+		type: String
 	},
 	client:{
 		type: String,
 		required: true
 	},
 	last_port:{
-		type: String,
-		required: true
+		type: String
 	},
 	isps:{
-		type: String,
-		required: true
+		type: String
 	},
 	next_port:{
-		type: String,
-		required: true
+		type: String
 	},
 	port_of_call:{
 		type: String,
 		required: true
 	},
 	pic:{
-		type: String,
-		required: true
+		type: String
 	},
 	task:{
-		type: [Task],
-		required: true
+		type: [Task]
 	},
 	note: {
 		type: [String]
@@ -110,12 +101,10 @@ var jobSchema = new Schema({
 		required: true
 	},
 	assigned:{
-		type: Number,
-		required: true
+		type: Number
 	},
 	status:{
-		type: Number,
-		required: true
+		type: Number
 	},
 })
 
